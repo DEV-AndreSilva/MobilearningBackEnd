@@ -35,10 +35,11 @@ namespace MobilerningBackEnd.Repositories
         {
           if(_context.Words != null)
             {
-                var word = _context.Words.Find(id);
-                if(word != null)
+                 var wordFind = _context.Words.FirstOrDefault(word=>word.ID==id);
+
+                if(wordFind != null)
                 {
-                    _context.Entry(word).State = EntityState.Deleted;
+                    _context.Entry(wordFind).State = EntityState.Deleted;
                     _context.SaveChanges();
                 }
 
@@ -55,11 +56,10 @@ namespace MobilerningBackEnd.Repositories
         }
 
         public void Update(Guid id, Word word)
-        {
-            Console.WriteLine(id);
+        {  
             if(_context.Words != null)
             {
-                var wordFind = _context.Words.Find(word.ID);
+                var wordFind = _context.Words.FirstOrDefault(word=>word.ID==id);
                 
                 if(wordFind != null)
                 {

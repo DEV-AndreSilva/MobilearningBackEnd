@@ -41,7 +41,7 @@ namespace MobilerningBackEnd.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(string id, [FromServices]IWordRepository repository)
         {
-            repository.Delete(new Guid(id.ToString()));
+            repository.Delete(new Guid(id));
 
             return Ok();
         }
