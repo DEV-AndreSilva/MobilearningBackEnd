@@ -1,19 +1,30 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MobilerningBackEnd.Models;
 using MobilerningBackEnd.Repositories;
 
 namespace MobilerningBackEnd.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("word")]
     public class WordController : ControllerBase
     {
         
         [HttpGet]
-        public IActionResult Get([FromServices]IWordRepository repository)
+        public IActionResult Read([FromServices]IWordRepository repository)
         {
-            var tarefas = repository.Read();
-            return Ok(tarefas);
+            if(User.Identity != null)
+            {
+                if(User.Identity.Name != null)
+                {
+                    var id =  new Guid(User.Identity.Name);
+                    var tarefas = repository.Read(id);
+                    return Ok(tarefas);
+                }
+            }
+
+            return Unauthorized();
         }
 
         [HttpPost]
@@ -21,10 +32,22 @@ namespace MobilerningBackEnd.Controllers
         {
             if(!ModelState.IsValid)
                 return BadRequest();
-            
-            repository.Create(model);
 
-            return Ok();
+            if(User.Identity != null)
+            {
+                if(User.Identity.Name != null)
+                {
+                    //obtendo o id pelo token da requisição
+                    model.UserId = new Guid(User.Identity.Name);
+
+                    repository.Create(model);
+
+                    return Ok();
+                }   
+            }
+           
+           return Unauthorized();
+            
         }
 
         [HttpPut("{id}")]

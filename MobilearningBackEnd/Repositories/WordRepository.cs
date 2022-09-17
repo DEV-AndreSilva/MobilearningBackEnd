@@ -5,7 +5,7 @@ namespace MobilerningBackEnd.Repositories
 {
     public interface IWordRepository
     {
-        List<Word> Read();
+        List<Word> Read(Guid id);
         void Create(Word word);
         void Delete(Guid id);
         void Update(Guid id, Word word);
@@ -47,10 +47,14 @@ namespace MobilerningBackEnd.Repositories
             }
         }
 
-        public List<Word> Read()
+        public List<Word> Read(Guid id)
         {
             if(_context.Words != null)
-            return _context.Words.ToList();
+            {
+                var results = _context.Words.Where(Word => Word.UserId == id).ToList();
+                return results;
+            }
+            
 
             return new List<Word>();
         }
