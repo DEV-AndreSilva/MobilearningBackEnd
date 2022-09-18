@@ -6,6 +6,8 @@ namespace MobilerningBackEnd.Repositories
     {
         User? Read(string Email, string Password);
 
+        List<User>? listUsers ();
+
         void Create (User usuario);
     }
 
@@ -29,6 +31,16 @@ namespace MobilerningBackEnd.Repositories
                 _context.Users.Add(usuario);
                 _context.SaveChanges();
             }
+        }
+
+        public List<User>? listUsers()
+        {
+            if(_context.Users != null)
+            {
+                var results = _context.Users.ToList();
+                return results;
+            }
+            return null;
         }
 
         public User? Read(string Email, string Password)

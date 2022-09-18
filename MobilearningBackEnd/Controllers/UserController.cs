@@ -47,6 +47,14 @@ namespace MobilerningBackEnd.Controllers
             });
         }
 
+        [HttpGet]
+        [Route("listUsers")]
+        public IActionResult listUsers([FromServices]IUserRepository repository)
+        {
+            var user = repository.listUsers();
+            return Ok(user);
+        }
+
         private string GenerateToken(User usuario)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

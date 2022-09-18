@@ -5,7 +5,7 @@ using MobilerningBackEnd.Repositories;
 
 namespace MobilerningBackEnd.Controllers
 {
-    [Authorize]
+
     [ApiController]
     [Route("word")]
     public class WordController : ControllerBase
