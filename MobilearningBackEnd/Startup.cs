@@ -39,7 +39,9 @@ public class Startup
         });
 
         //adicionando opçao de banco de dados
-        services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("BDWords"));
+        // services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("BDWords"));
+
+        services.AddDbContext<DataContext>(options =>options.UseNpgsql(Configuration.GetConnectionString("Heroku")));
 
         //adicionando o serviço que permite a manipulação do repositorio no controller
         services.AddTransient<IWordRepository, WordRepository>();
