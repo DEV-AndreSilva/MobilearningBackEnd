@@ -6,6 +6,7 @@ using MobilerningBackEnd.Models.ViewModels;
 using MobilerningBackEnd.Repositories;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 
 namespace MobilerningBackEnd.Controllers
 {
@@ -49,10 +50,18 @@ namespace MobilerningBackEnd.Controllers
 
         [HttpGet]
         [Route("listUsers")]
-        public IActionResult listUsers([FromServices]IUserRepository repository)
+        public IActionResult  listUsers([FromServices]IUserRepository repository)
         {
             var user = repository.listUsers();
-            return Ok(user);
+            
+            //var jobject =('yourVariable');
+           string jsonString = JsonSerializer.Serialize(user);
+           return Ok(jsonString);
+            
+            
+
+            // var responseError = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            // return responseError;
         }
 
         private string GenerateToken(User usuario)
