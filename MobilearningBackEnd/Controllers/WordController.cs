@@ -20,7 +20,9 @@ namespace MobilerningBackEnd.Controllers
                 {
                     var id =  new Guid(User.Identity.Name);
                     var tarefas = repository.Read(id);
-                    return Ok(tarefas);
+                    string jsonString = JsonSerializer.Serialize(tarefas);
+                    return Ok(jsonString);
+                
                 }
             }
 
