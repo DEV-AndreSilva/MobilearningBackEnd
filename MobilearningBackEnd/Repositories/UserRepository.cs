@@ -6,9 +6,9 @@ namespace MobilerningBackEnd.Repositories
     {
         User? Read(string Email, string Password);
 
-        List<User>? listUsers ();
+        List<User>? listUsers();
 
-        void Create (User usuario);
+        int Create(User usuario);
     }
 
     public class UserRepository : IUserRepository
@@ -20,22 +20,29 @@ namespace MobilerningBackEnd.Repositories
         public UserRepository(DataContext context, IConfiguration configuration)
         {
             _context = context;
-            _configuration =configuration;
+            _configuration = configuration;
         }
-        public void Create(User usuario)
+        public int Create(User usuario)
         {
-            if(_context.Users != null)
+            if (_context.Users != null)
             {
-                usuario.Id = Guid.NewGuid();
+                var userFind = _context.Users.SingleOrDefault(user => user.Email == usuario.Email);
 
-                _context.Users.Add(usuario);
-                _context.SaveChanges();
+                if (userFind == null)
+                {
+                    usuario.Id = Guid.NewGuid();
+                    _context.Users.Add(usuario);
+                    _context.SaveChanges();
+
+                    return 1;
+                }
             }
+            return 0;
         }
 
         public List<User>? listUsers()
         {
-            if(_context.Users != null)
+            if (_context.Users != null)
             {
                 var results = _context.Users.ToList();
                 return results;
@@ -45,13 +52,13 @@ namespace MobilerningBackEnd.Repositories
 
         public User? Read(string Email, string Password)
         {
-            if(_context.Users != null)
+            if (_context.Users != null)
             {
-               var userFind = _context.Users.SingleOrDefault(user=>user.Email==Email && user.Password==Password);
-               if(userFind != null)
-               return userFind;
+                var userFind = _context.Users.SingleOrDefault(user => user.Email == Email && user.Password == Password);
+                if (userFind != null)
+                    return userFind;
             }
-            
+
 
             return null;
         }

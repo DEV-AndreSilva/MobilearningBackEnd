@@ -26,8 +26,12 @@ namespace MobilerningBackEnd.Controllers
             if(!ModelState.IsValid)
                 return BadRequest(); //status 400
 
-            repository.Create(model);
+            var status = repository.Create(model);
+
+            if (status ==1)
             return Ok(); //status 200
+
+            return BadRequest("E-mail informado pertence a outro usuário do sistema");
         }
         [HttpPost]
         [Route("login")]
