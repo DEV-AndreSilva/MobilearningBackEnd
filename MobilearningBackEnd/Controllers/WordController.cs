@@ -19,7 +19,7 @@ namespace MobilerningBackEnd.Controllers
             {
                 if(User.Identity.Name != null)
                 {
-                    var id =  new Guid(User.Identity.Name);
+                    var id =  Convert.ToInt32(User.Identity.Name);
                     var tarefas = repository.Read(id);
                     string jsonString = JsonSerializer.Serialize(tarefas);
                     return Ok(jsonString);
@@ -41,7 +41,7 @@ namespace MobilerningBackEnd.Controllers
                 if(User.Identity.Name != null)
                 {
                     //obtendo o id pelo token da requisição
-                    model.UserId = new Guid(User.Identity.Name);
+                    model.UserId = Convert.ToInt32(User.Identity.Name);
 
                     repository.Create(model);
 
@@ -59,7 +59,7 @@ namespace MobilerningBackEnd.Controllers
             if(!ModelState.IsValid)
                 return BadRequest();
             
-            repository.Update(new Guid(id), model);
+            repository.Update(Convert.ToInt32(id), model);
 
             return Ok();
         }
@@ -67,7 +67,7 @@ namespace MobilerningBackEnd.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(string id, [FromServices]IWordRepository repository)
         {
-            repository.Delete(new Guid(id));
+            repository.Delete(Convert.ToInt32((id)));
 
             return Ok();
         }

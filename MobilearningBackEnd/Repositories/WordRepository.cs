@@ -5,10 +5,10 @@ namespace MobilerningBackEnd.Repositories
 {
     public interface IWordRepository
     {
-        List<Word> Read(Guid id);
+        List<Word> Read(int id);
         void Create(Word word);
-        void Delete(Guid id);
-        void Update(Guid id, Word word);
+        void Delete(int id);
+        void Update(int id, Word word);
     }
 
     public class WordRepository : IWordRepository
@@ -24,14 +24,14 @@ namespace MobilerningBackEnd.Repositories
         {
             if(_context.Words != null)
             {
-                word.ID = Guid.NewGuid();
+              //  word.ID = Guid.NewGuid();
 
                 _context.Words.Add(word);
                 _context.SaveChanges();
             }
         }
 
-        public void Delete(Guid id)
+        public void Delete(int id)
         {
           if(_context.Words != null)
             {
@@ -47,7 +47,7 @@ namespace MobilerningBackEnd.Repositories
             }
         }
 
-        public List<Word> Read(Guid id)
+        public List<Word> Read(int id)
         {
             if(_context.Words != null)
             {
@@ -59,7 +59,7 @@ namespace MobilerningBackEnd.Repositories
             return new List<Word>();
         }
 
-        public void Update(Guid id, Word word)
+        public void Update(int id, Word word)
         {  
             if(_context.Words != null)
             {

@@ -30,7 +30,7 @@ namespace MobilerningBackEnd.Repositories
 
                 if (userFind == null)
                 {
-                    usuario.Id = Guid.NewGuid();
+                   // usuario.Id = Guid.NewGuid();
                     _context.Users.Add(usuario);
                     _context.SaveChanges();
 
