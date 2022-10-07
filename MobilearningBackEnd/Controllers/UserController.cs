@@ -46,10 +46,16 @@ namespace MobilerningBackEnd.Controllers
                 return Unauthorized();
 
             usuario.Password = "";
-            return Ok(new {
-                usuario = usuario,
-                token = GenerateToken(usuario)
-            });
+            string token = GenerateToken(usuario);
+
+            List<Object> teste = new List<Object>();
+            teste.Add(usuario);
+            teste.Add(token);
+
+            string jsonString = JsonSerializer.Serialize(teste);
+
+
+            return Ok(jsonString);
         }
 
         [HttpGet]
