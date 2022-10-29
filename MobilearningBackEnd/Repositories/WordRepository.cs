@@ -75,8 +75,6 @@ namespace MobilerningBackEnd.Repositories
                     _context.Entry(wordFind).State = EntityState.Modified;
                     _context.SaveChanges();
                 }
-
-                
             }
         }
     }

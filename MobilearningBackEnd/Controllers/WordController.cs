@@ -20,8 +20,8 @@ namespace MobilerningBackEnd.Controllers
                 if(User.Identity.Name != null)
                 {
                     var id =  Convert.ToInt32(User.Identity.Name);
-                    var tarefas = repository.Read(id);
-                    string jsonString = JsonSerializer.Serialize(tarefas);
+                    var words = repository.Read(id);
+                    string jsonString = JsonSerializer.Serialize(words);
                     return Ok(jsonString);
                 
                 }

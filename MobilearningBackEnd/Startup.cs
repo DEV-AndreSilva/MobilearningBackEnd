@@ -46,6 +46,8 @@ public class Startup
         //adicionando o serviço que permite a manipulação do repositorio no controller
         services.AddTransient<IWordRepository, WordRepository>();
         services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<IActivityRepository, ActivityRepository>();
+        services.AddTransient<IUserActivityRepository, UserActivityRepository>();
         services.AddRazorPages();
     }
  
