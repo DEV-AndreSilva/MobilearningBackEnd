@@ -12,7 +12,7 @@ namespace MobilerningBackEnd.Repositories
         void Delete(int id);
         void Update(int id, UserActivityView userActivity);
 
-        List<UserActivity>? ListUsersActivities();
+        List<UserActivity>? ListUserActivities(int idUser);
     }
 
     public class UserActivityRepository : IUserActivityRepository
@@ -134,13 +134,13 @@ namespace MobilerningBackEnd.Repositories
             }
         }
 
-        public List<UserActivity>? ListUsersActivities()
+        public List<UserActivity>? ListUserActivities(int idUser)
         {
             if (_context.UserActivities != null)
             {
                 if (_context.Activities != null && _context.Users != null)
                 {
-                    var results = _context.UserActivities.ToList();
+                    var results = _context.UserActivities.Where(userActivity => userActivity.idUser == idUser).ToList();
 
                     List<UserActivity> ListaCompleta = new List<UserActivity>();
                     foreach (UserActivity usuarioAtividade in results)

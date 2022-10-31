@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MobilearningBackEnd.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221029190735_InitialCreate")]
+    [Migration("20221031195819_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,7 +37,7 @@ namespace MobilearningBackEnd.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("conslusion")
+                    b.Property<string>("conclusion")
                         .IsRequired()
                         .HasColumnType("text");
 

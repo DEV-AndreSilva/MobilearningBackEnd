@@ -22,7 +22,7 @@ namespace MobilearningBackEnd.Migrations
                     process = table.Column<string>(type: "text", nullable: false),
                     information = table.Column<List<string>>(type: "text[]", nullable: false),
                     avaliation = table.Column<string>(type: "text", nullable: false),
-                    conslusion = table.Column<string>(type: "text", nullable: false),
+                    conclusion = table.Column<string>(type: "text", nullable: false),
                     references = table.Column<List<string>>(type: "text[]", nullable: false),
                     title = table.Column<string>(type: "text", nullable: false),
                     subttitle = table.Column<string>(type: "text", nullable: false),

@@ -52,11 +52,11 @@ namespace MobilerningBackEnd.Controllers
         }
 
 
-        [HttpGet]
-        [Route("ListUsersActivities")]
-        public IActionResult ListUsersActivities([FromServices] IUserActivityRepository repository)
+        [HttpGet("{idUser}")]
+        [Route("ListUserActivities")]
+        public IActionResult ListUserActivities(string idUser, [FromServices] IUserActivityRepository repository)
         {
-            var user = repository.ListUsersActivities();
+            var user = repository.ListUserActivities(Convert.ToInt32(idUser));
 
             //var jobject =('yourVariable');
             string jsonString = JsonSerializer.Serialize(user);

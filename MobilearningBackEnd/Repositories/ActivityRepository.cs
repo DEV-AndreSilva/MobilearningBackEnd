@@ -95,7 +95,7 @@ namespace MobilerningBackEnd.Repositories
                     activityFind.process = activity.process;
                     activityFind.information = activity.information;
                     activityFind.avaliation = activity.avaliation;
-                    activityFind.conslusion = activity.conslusion;
+                    activityFind.conclusion = activity.conclusion;
                     activityFind.references = activity.references;
                     activityFind.title = activity.title;
                     activityFind.subttitle = activity.subttitle;

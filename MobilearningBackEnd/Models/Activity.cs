@@ -20,7 +20,7 @@ namespace MobilerningBackEnd.Models
         public string?  avaliation { get; set; }
 
         [Required]
-        public string?  conslusion { get; set; }
+        public string?  conclusion { get; set; }
 
         [Required]
         public List<string>? references {get; set;}

@@ -35,7 +35,7 @@ namespace MobilearningBackEnd.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("conslusion")
+                    b.Property<string>("conclusion")
                         .IsRequired()
                         .HasColumnType("text");
 
