@@ -48,6 +48,8 @@ public class Startup
         services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IActivityRepository, ActivityRepository>();
         services.AddTransient<IUserActivityRepository, UserActivityRepository>();
+        services.AddTransient<ITeacherRepository, TeacherRepository>();
+        services.AddTransient<IStudentRepository, StudentRepository>();
         services.AddRazorPages();
     }
  

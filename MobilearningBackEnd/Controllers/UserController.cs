@@ -21,31 +21,18 @@ namespace MobilerningBackEnd.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody]User model , [FromServices]IUserRepository repository)
-        {
-            if(!ModelState.IsValid)
-                return BadRequest(); //status 400
-
-            var status = repository.Create(model);
-
-            if (status ==1)
-            return Ok(); //status 200
-
-            return BadRequest("E-mail informado pertence a outro usuário do sistema");
-        }
-        [HttpPost]
-        [Route("login")]
+        [Route("Login")]
         public IActionResult Login([FromBody]UserLogin model,[FromServices]IUserRepository repository)
         {
             if(!ModelState.IsValid)
                 return BadRequest();
 
-            var usuario = repository.Read(model.Email,model.Password);
+            var usuario = repository.Read(model.email!,model.password!);
 
             if(usuario == null )
                 return Unauthorized();
 
-            usuario.Password = "";
+            usuario.password = "";
             string token = GenerateToken(usuario);
 
             List<Object> teste = new List<Object>();
@@ -59,10 +46,10 @@ namespace MobilerningBackEnd.Controllers
         }
 
         [HttpGet]
-        [Route("listUsers")]
-        public IActionResult  listUsers([FromServices]IUserRepository repository)
+        [Route("ListUsers")]
+        public IActionResult  ListUsers([FromServices]IUserRepository repository)
         {
-            var user = repository.listUsers();
+            var user = repository.ListUsers();
             
             //var jobject =('yourVariable');
            string jsonString = JsonSerializer.Serialize(user);
@@ -84,10 +71,13 @@ namespace MobilerningBackEnd.Controllers
 
             var key = Encoding.ASCII.GetBytes(keyString);
 
+            var type  = usuario.type == null ? "undefined" : usuario.type.ToString();
+
             var descriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]{
-                    new Claim(ClaimTypes.Name, usuario.Id.ToString()),
+                    new Claim(ClaimTypes.Name, usuario.id.ToString()),
+                    new Claim(ClaimTypes.Role, type)
                 }),
                 Expires = DateTime.UtcNow.AddHours(5),
                 SigningCredentials = new SigningCredentials(

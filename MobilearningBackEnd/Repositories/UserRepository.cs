@@ -6,9 +6,7 @@ namespace MobilerningBackEnd.Repositories
     {
         User? Read(string Email, string Password);
 
-        List<User>? listUsers();
-
-        int Create(User usuario);
+        List<User>? ListUsers();
     }
 
     public class UserRepository : IUserRepository
@@ -22,25 +20,8 @@ namespace MobilerningBackEnd.Repositories
             _context = context;
             _configuration = configuration;
         }
-        public int Create(User usuario)
-        {
-            if (_context.Users != null)
-            {
-                var userFind = _context.Users.SingleOrDefault(user => user.Email == usuario.Email);
 
-                if (userFind == null)
-                {
-                   // usuario.Id = Guid.NewGuid();
-                    _context.Users.Add(usuario);
-                    _context.SaveChanges();
-
-                    return 1;
-                }
-            }
-            return 0;
-        }
-
-        public List<User>? listUsers()
+        public List<User>? ListUsers()
         {
             if (_context.Users != null)
             {
@@ -54,7 +35,7 @@ namespace MobilerningBackEnd.Repositories
         {
             if (_context.Users != null)
             {
-                var userFind = _context.Users.SingleOrDefault(user => user.Email == Email && user.Password == Password);
+                var userFind = _context.Users.SingleOrDefault(user => user.email == Email && user.password == Password);
                 if (userFind != null)
                     return userFind;
             }

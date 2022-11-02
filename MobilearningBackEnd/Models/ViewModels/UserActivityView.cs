@@ -1,11 +1,16 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MobilerningBackEnd.Models.ViewModels
 {
     public class UserActivityView
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int id { get; set; }
+
         [Required]
         public int idUser { get; set; }
+
         [Required]
         public int idActivity { get; set; }
 
@@ -13,14 +18,14 @@ namespace MobilerningBackEnd.Models.ViewModels
         public string? currentStage { get; set; }
 
         [Required]
-        public string? Progress { get; set; }
+        public string? progress { get; set; }
 
-        public UserActivityView(int iduser, int idactivity, string currentstage, string progress)
+        public UserActivityView(int idUser, int idActivity, string currentStage, string progress)
         {
-            this.idUser = iduser;
-            this.idActivity = idactivity;
-            this.currentStage = currentstage;
-            this.Progress = progress;
+            this.idUser = idUser;
+            this.idActivity = idActivity;
+            this.currentStage = currentStage;
+            this.progress = progress;
         }
     }
 }

@@ -6,12 +6,20 @@ namespace MobilerningBackEnd.Models
     public class User
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int id { get; set; }
         [Required]
-        public string?  Name { get; set; }
+        public string? name { get; set; }
         [Required]
-        public string? Email { get; set; }
+        public string? email { get; set; }
         [Required]
-        public string?  Password { get; set; }
+        public string? address { get; set; }
+        [Required]
+        public string? cpf { get; set; }
+        [Required]
+        public string? phone { get; set; }
+        [Required]
+        public string? password { get; set; }
+        [Required]
+        public string? type { get; set; }
     }
 }
