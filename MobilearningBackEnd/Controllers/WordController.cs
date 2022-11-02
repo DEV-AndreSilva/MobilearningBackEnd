@@ -41,7 +41,7 @@ namespace MobilerningBackEnd.Controllers
                 if(User.Identity.Name != null)
                 {
                     //obtendo o id pelo token da requisição
-                    model.UserId = Convert.ToInt32(User.Identity.Name);
+                    model.userId = Convert.ToInt32(User.Identity.Name);
 
                     repository.Create(model);
 

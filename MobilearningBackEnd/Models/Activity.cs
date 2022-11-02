@@ -17,7 +17,7 @@ namespace MobilerningBackEnd.Models
         public List<string>? information {get; set;}
         
         [Required]
-        public string?  avaliation { get; set; }
+        public string?  evaluation { get; set; }
 
         [Required]
         public string?  conclusion { get; set; }
@@ -29,7 +29,7 @@ namespace MobilerningBackEnd.Models
         public string?  title { get; set; }
 
         [Required]
-        public string?  subttitle { get; set; }
+        public string?  subtitle { get; set; }
 
         [Required]
         public string?  imageURL { get; set; }

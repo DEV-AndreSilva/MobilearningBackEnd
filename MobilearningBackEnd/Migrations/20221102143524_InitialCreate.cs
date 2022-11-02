@@ -21,11 +21,11 @@ namespace MobilearningBackEnd.Migrations
                     task = table.Column<string>(type: "text", nullable: false),
                     process = table.Column<string>(type: "text", nullable: false),
                     information = table.Column<List<string>>(type: "text[]", nullable: false),
-                    avaliation = table.Column<string>(type: "text", nullable: false),
+                    evaluation = table.Column<string>(type: "text", nullable: false),
                     conclusion = table.Column<string>(type: "text", nullable: false),
                     references = table.Column<List<string>>(type: "text[]", nullable: false),
                     title = table.Column<string>(type: "text", nullable: false),
-                    subttitle = table.Column<string>(type: "text", nullable: false),
+                    subtitle = table.Column<string>(type: "text", nullable: false),
                     imageURL = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -37,32 +37,76 @@ namespace MobilearningBackEnd.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false)
+                    name = table.Column<string>(type: "text", nullable: false),
+                    email = table.Column<string>(type: "text", nullable: false),
+                    address = table.Column<string>(type: "text", nullable: false),
+                    cpf = table.Column<string>(type: "text", nullable: false),
+                    phone = table.Column<string>(type: "text", nullable: false),
+                    password = table.Column<string>(type: "text", nullable: false),
+                    type = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Words",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
-                    PortugueseWord = table.Column<string>(type: "text", nullable: false),
-                    EnglishWord = table.Column<string>(type: "text", nullable: false),
-                    PortugueseDefinition = table.Column<string>(type: "text", nullable: false),
-                    EnglishDefinition = table.Column<string>(type: "text", nullable: false)
+                    userId = table.Column<int>(type: "integer", nullable: false),
+                    portugueseWord = table.Column<string>(type: "text", nullable: false),
+                    englishWord = table.Column<string>(type: "text", nullable: false),
+                    portugueseDefinition = table.Column<string>(type: "text", nullable: false),
+                    englishDefinition = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Words", x => x.ID);
+                    table.PrimaryKey("PK_Words", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    IdUser = table.Column<int>(type: "integer", nullable: false),
+                    nivel = table.Column<string>(type: "text", nullable: false),
+                    userid = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Students_Users_userid",
+                        column: x => x.userid,
+                        principalTable: "Users",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Teachers",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    idUser = table.Column<int>(type: "integer", nullable: false),
+                    graduation = table.Column<string>(type: "text", nullable: false),
+                    userid = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Teachers", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Teachers_Users_userid",
+                        column: x => x.userid,
+                        principalTable: "Users",
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -77,7 +121,7 @@ namespace MobilearningBackEnd.Migrations
                     progress = table.Column<double>(type: "double precision", nullable: false),
                     startDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     endDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    userId = table.Column<int>(type: "integer", nullable: true),
+                    userid = table.Column<int>(type: "integer", nullable: true),
                     activityid = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -89,11 +133,21 @@ namespace MobilearningBackEnd.Migrations
                         principalTable: "Activities",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_UserActivities_Users_userId",
-                        column: x => x.userId,
+                        name: "FK_UserActivities_Users_userid",
+                        column: x => x.userid,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_userid",
+                table: "Students",
+                column: "userid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teachers_userid",
+                table: "Teachers",
+                column: "userid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserActivities_activityid",
@@ -101,13 +155,19 @@ namespace MobilearningBackEnd.Migrations
                 column: "activityid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserActivities_userId",
+                name: "IX_UserActivities_userid",
                 table: "UserActivities",
-                column: "userId");
+                column: "userid");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Students");
+
+            migrationBuilder.DropTable(
+                name: "Teachers");
+
             migrationBuilder.DropTable(
                 name: "UserActivities");
 

@@ -6,17 +6,17 @@ namespace MobilerningBackEnd.Models
     public class Word
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
-        public int UserId { get; set; }
+        public int id { get; set; }
+        public int userId { get; set; }
 
         [Required]
-        public string PortugueseWord { get; set; } = "";
+        public string portugueseWord { get; set; } = "";
         [Required]
-        public string EnglishWord { get; set; } = "";
+        public string englishWord { get; set; } = "";
         [Required]
-        public string PortugueseDefinition { get; set; } = "";
+        public string portugueseDefinition { get; set; } = "";
         [Required]
-        public string EnglishDefinition { get; set; } = "";
+        public string englishDefinition { get; set; } = "";
 
     }
 }

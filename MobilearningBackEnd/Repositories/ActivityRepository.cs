@@ -94,11 +94,11 @@ namespace MobilerningBackEnd.Repositories
                     activityFind.task = activity.task;
                     activityFind.process = activity.process;
                     activityFind.information = activity.information;
-                    activityFind.avaliation = activity.avaliation;
+                    activityFind.evaluation = activity.evaluation;
                     activityFind.conclusion = activity.conclusion;
                     activityFind.references = activity.references;
                     activityFind.title = activity.title;
-                    activityFind.subttitle = activity.subttitle;
+                    activityFind.subtitle = activity.subtitle;
                     activityFind.imageURL = activity.imageURL;
 
                     _context.Entry(activityFind).State = EntityState.Modified;

@@ -33,20 +33,20 @@ namespace MobilerningBackEnd.Repositories
                 if (_context.Activities != null && _context.Users != null)
                 {
                     var activityFind = _context.Activities.SingleOrDefault(activity => activity.id == useractivity.idActivity);
-                    var userFind = _context.Users.SingleOrDefault(users => users.Id == useractivity.idUser);
+                    var userFind = _context.Users.SingleOrDefault(users => users.id == useractivity.idUser);
 
                     if (activityFind != null && userFind != null)
                     {
                         //verificar se a atividade ja foi vinculada ao usuário
-                        var usuarioAtividadeJaCriado = _context.UserActivities.FirstOrDefault(userActivity => userActivity.idActivity == activityFind.id && userActivity.idUser == userFind.Id);
+                        var usuarioAtividadeJaCriado = _context.UserActivities.FirstOrDefault(userActivity => userActivity.idActivity == activityFind.id && userActivity.idUser == userFind.id);
 
                         if (usuarioAtividadeJaCriado == null)
                         {
                             UserActivity usuarioAtividade = new UserActivity();
                             usuarioAtividade.idActivity = activityFind.id;
-                            usuarioAtividade.idUser = userFind.Id;
+                            usuarioAtividade.idUser = userFind.id;
                             usuarioAtividade.currentStage = useractivity.currentStage;
-                            usuarioAtividade.progress = Convert.ToDouble(useractivity.Progress);
+                            usuarioAtividade.progress = Convert.ToDouble(useractivity.progress);
                             usuarioAtividade.startDate = DateTime.Now.ToUniversalTime();
                             usuarioAtividade.endDate = DateTime.Now.AddDays(-1).ToUniversalTime();
 
@@ -76,7 +76,7 @@ namespace MobilerningBackEnd.Repositories
                     if (_context.Users != null && _context.Activities != null)
                     {
                         userActivityFind.activity = _context.Activities.FirstOrDefault(activity => activity.id == userActivityFind.idActivity);
-                        userActivityFind.user = _context.Users.FirstOrDefault(user => user.Id == userActivityFind.idUser);
+                        userActivityFind.user = _context.Users.FirstOrDefault(user => user.id == userActivityFind.idUser);
                     }
 
                     return userActivityFind;
@@ -113,16 +113,16 @@ namespace MobilerningBackEnd.Repositories
                 {
                     var userActivityFind = _context.UserActivities.FirstOrDefault(userActivity => userActivity.id == id);
                     var activityFind = _context.Activities.SingleOrDefault(activity => activity.id == useractivity.idActivity);
-                    var userFind = _context.Users.SingleOrDefault(users => users.Id == useractivity.idUser);
+                    var userFind = _context.Users.SingleOrDefault(users => users.id == useractivity.idUser);
 
                     if (activityFind != null && userFind != null && userActivityFind != null)
                     {
                         userActivityFind.activity = activityFind;
                         userActivityFind.user = userFind;
                         userActivityFind.currentStage = useractivity.currentStage;
-                        userActivityFind.progress = Convert.ToDouble(useractivity.Progress);
+                        userActivityFind.progress = Convert.ToDouble(useractivity.progress);
 
-                        if (useractivity.Progress == "100")
+                        if (useractivity.progress == "100")
                             userActivityFind.endDate = null;
 
                         _context.Entry(userActivityFind).State = EntityState.Modified;
@@ -153,7 +153,7 @@ namespace MobilerningBackEnd.Repositories
                         usuarioAtiviadeTrans.progress = usuarioAtividade.progress;
                         usuarioAtiviadeTrans.startDate = usuarioAtividade.startDate;
                         usuarioAtiviadeTrans.endDate = usuarioAtividade.endDate;
-                        usuarioAtiviadeTrans.user = _context.Users.FirstOrDefault(user => user.Id == usuarioAtividade.idUser);
+                        usuarioAtiviadeTrans.user = _context.Users.FirstOrDefault(user => user.id == usuarioAtividade.idUser);
                         usuarioAtiviadeTrans.activity = _context.Activities.FirstOrDefault(activity => activity.id == usuarioAtividade.idActivity);
 
                         ListaCompleta.Add(usuarioAtiviadeTrans);

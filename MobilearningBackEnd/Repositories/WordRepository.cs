@@ -24,8 +24,6 @@ namespace MobilerningBackEnd.Repositories
         {
             if(_context.Words != null)
             {
-              //  word.ID = Guid.NewGuid();
-
                 _context.Words.Add(word);
                 _context.SaveChanges();
             }
@@ -35,7 +33,7 @@ namespace MobilerningBackEnd.Repositories
         {
           if(_context.Words != null)
             {
-                 var wordFind = _context.Words.FirstOrDefault(word=>word.ID==id);
+                 var wordFind = _context.Words.FirstOrDefault(word=>word.id==id);
 
                 if(wordFind != null)
                 {
@@ -51,7 +49,7 @@ namespace MobilerningBackEnd.Repositories
         {
             if(_context.Words != null)
             {
-                var results = _context.Words.Where(Word => Word.UserId == id).ToList();
+                var results = _context.Words.Where(Word => Word.userId == id).ToList();
                 return results;
             }
             
@@ -63,14 +61,14 @@ namespace MobilerningBackEnd.Repositories
         {  
             if(_context.Words != null)
             {
-                var wordFind = _context.Words.FirstOrDefault(word=>word.ID==id);
+                var wordFind = _context.Words.FirstOrDefault(word=>word.id==id);
                 
                 if(wordFind != null)
                 {
-                    wordFind.EnglishWord = word.EnglishWord;
-                    wordFind.EnglishDefinition = word.EnglishDefinition;
-                    wordFind.PortugueseWord = word.PortugueseWord;
-                    wordFind.PortugueseDefinition = word.PortugueseDefinition;
+                    wordFind.englishWord = word.englishWord;
+                    wordFind.englishDefinition = word.englishDefinition;
+                    wordFind.portugueseWord = word.portugueseWord;
+                    wordFind.portugueseDefinition = word.portugueseDefinition;
 
                     _context.Entry(wordFind).State = EntityState.Modified;
                     _context.SaveChanges();

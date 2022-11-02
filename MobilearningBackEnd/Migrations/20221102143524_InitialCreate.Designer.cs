@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MobilearningBackEnd.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221031195819_InitialCreate")]
+    [Migration("20221102143524_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,11 +33,11 @@ namespace MobilearningBackEnd.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
-                    b.Property<string>("avaliation")
+                    b.Property<string>("conclusion")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("conclusion")
+                    b.Property<string>("evaluation")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -61,7 +61,7 @@ namespace MobilearningBackEnd.Migrations
                         .IsRequired()
                         .HasColumnType("text[]");
 
-                    b.Property<string>("subttitle")
+                    b.Property<string>("subtitle")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -78,27 +78,93 @@ namespace MobilearningBackEnd.Migrations
                     b.ToTable("Activities");
                 });
 
-            modelBuilder.Entity("MobilerningBackEnd.Models.User", b =>
+            modelBuilder.Entity("MobilerningBackEnd.Models.Student", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
-                    b.Property<string>("Email")
+                    b.Property<int>("IdUser")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("nivel")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
+                    b.Property<int?>("userid")
+                        .HasColumnType("integer");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("userid");
+
+                    b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("MobilerningBackEnd.Models.Teacher", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+
+                    b.Property<string>("graduation")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Password")
+                    b.Property<int>("idUser")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("userid")
+                        .HasColumnType("integer");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("userid");
+
+                    b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("MobilerningBackEnd.Models.User", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+
+                    b.Property<string>("address")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.Property<string>("cpf")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("phone")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("id");
 
                     b.ToTable("Users");
                 });
@@ -136,48 +202,66 @@ namespace MobilearningBackEnd.Migrations
                         .IsRequired()
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("userId")
+                    b.Property<int?>("userid")
                         .HasColumnType("integer");
 
                     b.HasKey("id");
 
                     b.HasIndex("activityid");
 
-                    b.HasIndex("userId");
+                    b.HasIndex("userid");
 
                     b.ToTable("UserActivities");
                 });
 
             modelBuilder.Entity("MobilerningBackEnd.Models.Word", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
-                    b.Property<string>("EnglishDefinition")
+                    b.Property<string>("englishDefinition")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("EnglishWord")
+                    b.Property<string>("englishWord")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("PortugueseDefinition")
+                    b.Property<string>("portugueseDefinition")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("PortugueseWord")
+                    b.Property<string>("portugueseWord")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("userId")
                         .HasColumnType("integer");
 
-                    b.HasKey("ID");
+                    b.HasKey("id");
 
                     b.ToTable("Words");
+                });
+
+            modelBuilder.Entity("MobilerningBackEnd.Models.Student", b =>
+                {
+                    b.HasOne("MobilerningBackEnd.Models.User", "user")
+                        .WithMany()
+                        .HasForeignKey("userid");
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("MobilerningBackEnd.Models.Teacher", b =>
+                {
+                    b.HasOne("MobilerningBackEnd.Models.User", "user")
+                        .WithMany()
+                        .HasForeignKey("userid");
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("MobilerningBackEnd.Models.UserActivity", b =>
@@ -188,7 +272,7 @@ namespace MobilearningBackEnd.Migrations
 
                     b.HasOne("MobilerningBackEnd.Models.User", "user")
                         .WithMany()
-                        .HasForeignKey("userId");
+                        .HasForeignKey("userid");
 
                     b.Navigation("activity");
 
