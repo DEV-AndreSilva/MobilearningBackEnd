@@ -7,6 +7,7 @@ namespace MobilerningBackEnd.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
+        public int? idTeacher {get; set;}
         [Required]
         public string?  introduction { get; set; }
         [Required]
@@ -33,6 +34,8 @@ namespace MobilerningBackEnd.Models
 
         [Required]
         public string?  imageURL { get; set; }
+
+        public virtual Teacher? user {get;set;}
 
 
     }

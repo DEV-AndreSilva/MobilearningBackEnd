@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MobilearningBackEnd.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221102143524_InitialCreate")]
+    [Migration("20221106221500_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,9 @@ namespace MobilearningBackEnd.Migrations
                     b.Property<string>("evaluation")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int?>("idTeacher")
+                        .HasColumnType("integer");
 
                     b.Property<string>("imageURL")
                         .IsRequired()
@@ -73,7 +76,12 @@ namespace MobilearningBackEnd.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("userid")
+                        .HasColumnType("integer");
+
                     b.HasKey("id");
+
+                    b.HasIndex("userid");
 
                     b.ToTable("Activities");
                 });
@@ -244,6 +252,15 @@ namespace MobilearningBackEnd.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Words");
+                });
+
+            modelBuilder.Entity("MobilerningBackEnd.Models.Activity", b =>
+                {
+                    b.HasOne("MobilerningBackEnd.Models.Teacher", "user")
+                        .WithMany()
+                        .HasForeignKey("userid");
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("MobilerningBackEnd.Models.Student", b =>

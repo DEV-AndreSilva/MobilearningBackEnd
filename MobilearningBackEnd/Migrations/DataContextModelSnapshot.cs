@@ -39,6 +39,9 @@ namespace MobilearningBackEnd.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("idTeacher")
+                        .HasColumnType("integer");
+
                     b.Property<string>("imageURL")
                         .IsRequired()
                         .HasColumnType("text");
@@ -71,7 +74,12 @@ namespace MobilearningBackEnd.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("userid")
+                        .HasColumnType("integer");
+
                     b.HasKey("id");
+
+                    b.HasIndex("userid");
 
                     b.ToTable("Activities");
                 });
@@ -242,6 +250,15 @@ namespace MobilearningBackEnd.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Words");
+                });
+
+            modelBuilder.Entity("MobilerningBackEnd.Models.Activity", b =>
+                {
+                    b.HasOne("MobilerningBackEnd.Models.Teacher", "user")
+                        .WithMany()
+                        .HasForeignKey("userid");
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("MobilerningBackEnd.Models.Student", b =>

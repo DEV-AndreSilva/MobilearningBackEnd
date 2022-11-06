@@ -52,11 +52,11 @@ namespace MobilerningBackEnd.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("{idTeacher}")]
         [Route("listActivities")]
-        public IActionResult listActivities([FromServices] IActivityRepository repository)
+        public IActionResult listActivities(string idTeacher,[FromServices] IActivityRepository repository)
         {
-            var user = repository.listActivities();
+            var user = repository.ListActivities(Convert.ToInt32(idTeacher));
 
             //var jobject =('yourVariable');
             string jsonString = JsonSerializer.Serialize(user);
@@ -64,7 +64,8 @@ namespace MobilerningBackEnd.Controllers
 
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
+        [Route("update")]
         public IActionResult Update(string id, [FromBody] Activity model, [FromServices] IActivityRepository repository)
         {
             if (!ModelState.IsValid)
@@ -75,11 +76,11 @@ namespace MobilerningBackEnd.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}/{idTeacher}")]
         [Route("delete")]
-        public IActionResult Delete(string id, [FromServices] IActivityRepository repository)
+        public IActionResult Delete(string id,string idTeacher, [FromServices] IActivityRepository repository)
         {
-            repository.Delete(Convert.ToInt32((id)));
+            repository.Delete(Convert.ToInt32((id)),Convert.ToInt32((idTeacher)));
 
             return Ok();
         }

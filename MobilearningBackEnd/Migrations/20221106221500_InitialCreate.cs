@@ -12,28 +12,6 @@ namespace MobilearningBackEnd.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Activities",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    introduction = table.Column<string>(type: "text", nullable: false),
-                    task = table.Column<string>(type: "text", nullable: false),
-                    process = table.Column<string>(type: "text", nullable: false),
-                    information = table.Column<List<string>>(type: "text[]", nullable: false),
-                    evaluation = table.Column<string>(type: "text", nullable: false),
-                    conclusion = table.Column<string>(type: "text", nullable: false),
-                    references = table.Column<List<string>>(type: "text[]", nullable: false),
-                    title = table.Column<string>(type: "text", nullable: false),
-                    subtitle = table.Column<string>(type: "text", nullable: false),
-                    imageURL = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Activities", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -110,6 +88,35 @@ namespace MobilearningBackEnd.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Activities",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    idTeacher = table.Column<int>(type: "integer", nullable: true),
+                    introduction = table.Column<string>(type: "text", nullable: false),
+                    task = table.Column<string>(type: "text", nullable: false),
+                    process = table.Column<string>(type: "text", nullable: false),
+                    information = table.Column<List<string>>(type: "text[]", nullable: false),
+                    evaluation = table.Column<string>(type: "text", nullable: false),
+                    conclusion = table.Column<string>(type: "text", nullable: false),
+                    references = table.Column<List<string>>(type: "text[]", nullable: false),
+                    title = table.Column<string>(type: "text", nullable: false),
+                    subtitle = table.Column<string>(type: "text", nullable: false),
+                    imageURL = table.Column<string>(type: "text", nullable: false),
+                    userid = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Activities", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Activities_Teachers_userid",
+                        column: x => x.userid,
+                        principalTable: "Teachers",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserActivities",
                 columns: table => new
                 {
@@ -140,6 +147,11 @@ namespace MobilearningBackEnd.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Activities_userid",
+                table: "Activities",
+                column: "userid");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Students_userid",
                 table: "Students",
                 column: "userid");
@@ -166,9 +178,6 @@ namespace MobilearningBackEnd.Migrations
                 name: "Students");
 
             migrationBuilder.DropTable(
-                name: "Teachers");
-
-            migrationBuilder.DropTable(
                 name: "UserActivities");
 
             migrationBuilder.DropTable(
@@ -176,6 +185,9 @@ namespace MobilearningBackEnd.Migrations
 
             migrationBuilder.DropTable(
                 name: "Activities");
+
+            migrationBuilder.DropTable(
+                name: "Teachers");
 
             migrationBuilder.DropTable(
                 name: "Users");

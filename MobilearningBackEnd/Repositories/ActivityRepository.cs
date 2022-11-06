@@ -7,11 +7,11 @@ namespace MobilerningBackEnd.Repositories
     {
         Activity? Read(int id);
 
-        List<Activity>? listActivities();
+        List<Activity>? ListActivities(int id);
 
         int Create(Activity atividade);
 
-        void Delete(int id);
+        void Delete(int id, int idTeacher);
         void Update(int id, Activity word);
     }
 
@@ -28,9 +28,10 @@ namespace MobilerningBackEnd.Repositories
         }
         public int Create(Activity atividade)
         {
+             Console.WriteLine(atividade.idTeacher);
             if (_context.Activities != null)
             {
-                var userFind = _context.Activities.SingleOrDefault(activity => activity.title == atividade.title);
+                var userFind = _context.Activities.SingleOrDefault(activity => activity.title == atividade.title && activity.idTeacher == atividade.idTeacher);
 
                 if (userFind == null)
                 {
@@ -43,11 +44,12 @@ namespace MobilerningBackEnd.Repositories
             return 0;
         }
 
-        public List<Activity>? listActivities()
+        public List<Activity>? ListActivities(int idTeacher)
         {
+            Console.WriteLine(idTeacher);
             if (_context.Activities != null)
             {
-                var results = _context.Activities.ToList();
+                var results = _context.Activities.Where(activity=> activity.idTeacher == idTeacher).ToList();
                 return results;
             }
             return null;
@@ -66,13 +68,14 @@ namespace MobilerningBackEnd.Repositories
             return null;
         }
 
-        public void Delete(int id)
+        public void Delete(int id, int idTeacher)
         {
-                Console.WriteLine(id);
+            Console.WriteLine(id);
+            Console.WriteLine(idTeacher);
             //verificar se não existe usuarioAtividade vinculado a ativiade para permitir a exclusão
             if(_context.Activities != null)
             {
-                 var activityFind = _context.Activities.FirstOrDefault(activityFind=>activityFind.id==id);
+                 var activityFind = _context.Activities.FirstOrDefault(activityFind=>activityFind.id==id && activityFind.idTeacher == idTeacher);
                  Console.WriteLine(activityFind);
 
                 if(activityFind != null)
@@ -82,24 +85,27 @@ namespace MobilerningBackEnd.Repositories
                 }    
             }
         }
-        public void Update(int id, Activity activity)
+        public void Update(int id, Activity activityModel)
         {
+            Console.WriteLine(id);
+            Console.WriteLine(activityModel.idTeacher);
+
             if (_context.Activities != null)
             {
-                var activityFind = _context.Activities.FirstOrDefault(activity => activity.id == id);
+                var activityFind = _context.Activities.FirstOrDefault(activity => activity.id == id && activity.idTeacher ==activityModel.idTeacher);
 
                 if (activityFind != null)
                 {
-                    activityFind.introduction = activity.introduction;
-                    activityFind.task = activity.task;
-                    activityFind.process = activity.process;
-                    activityFind.information = activity.information;
-                    activityFind.evaluation = activity.evaluation;
-                    activityFind.conclusion = activity.conclusion;
-                    activityFind.references = activity.references;
-                    activityFind.title = activity.title;
-                    activityFind.subtitle = activity.subtitle;
-                    activityFind.imageURL = activity.imageURL;
+                    activityFind.introduction = activityModel.introduction;
+                    activityFind.task = activityModel.task;
+                    activityFind.process = activityModel.process;
+                    activityFind.information = activityModel.information;
+                    activityFind.evaluation = activityModel.evaluation;
+                    activityFind.conclusion = activityModel.conclusion;
+                    activityFind.references = activityModel.references;
+                    activityFind.title = activityModel.title;
+                    activityFind.subtitle = activityModel.subtitle;
+                    activityFind.imageURL = activityModel.imageURL;
 
                     _context.Entry(activityFind).State = EntityState.Modified;
                     _context.SaveChanges();
