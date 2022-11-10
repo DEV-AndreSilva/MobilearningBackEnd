@@ -14,7 +14,7 @@ namespace MobilerningBackEnd.Repositories
 
         List<UserActivity>? ListUserActivities(int idUser);
 
-        List<UserView>? ListUsersFromActivity(int idActivity);
+        List<UserActivityResumeView>? ListUsersFromActivity(int idActivity);
     }
 
     public class UserActivityRepository : IUserActivityRepository
@@ -172,9 +172,9 @@ namespace MobilerningBackEnd.Repositories
         }
 
 
-        public List<UserView>? ListUsersFromActivity(int idActivity)
+        public List<UserActivityResumeView>? ListUsersFromActivity(int idActivity)
         {
-            List<UserView> users = new List<UserView>();
+            List<UserActivityResumeView> users = new List<UserActivityResumeView>();
             
              if (_context.UserActivities != null && _context.Users != null)
              {
@@ -183,13 +183,15 @@ namespace MobilerningBackEnd.Repositories
                 foreach(UserActivity userActivity in results)
                 {
 
-                    UserView userObject = new UserView();
+                    UserActivityResumeView userObject = new UserActivityResumeView();
                     User? user = _context.Users.FirstOrDefault(user => user.id == userActivity.idUser);
+                    
 
                     if(user != null)
                     {
                         userObject.idUser = user.id;
                         userObject.name = user.name;
+                        userObject.idUserActivity = userActivity.id;
 
                         users.Add(userObject);
                     }
