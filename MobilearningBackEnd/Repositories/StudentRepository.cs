@@ -22,20 +22,34 @@ namespace MobilerningBackEnd.Repositories
             _context = context;
             _configuration = configuration;
         }
-        public int Create(Student usuario)
+        public int Create(Student student)
         {
             if (_context.Students != null && _context.Users != null)
             {
-                var userFind = _context.Users.SingleOrDefault(user => user.email == usuario.user!.email);
+                var userFind = _context.Users.SingleOrDefault(user => user.email == student.user!.email);
                 if (userFind == null)
                 {
                    //adiciona o usuário ao banco de dados
-                    _context.Users.Add(usuario.user!);
-                    //adiciona o registro de estudante ao banco de dados
-                    _context.Students.Add(usuario);
-
+                    _context.Users.Add(student.user!);
+                    
+                    //salva o usuário
                     _context.SaveChanges();
 
+                    //busca o usuario salvo
+                    var userStudent = _context.Users.SingleOrDefault(user => user.email == student.user!.email);
+
+                    if(userStudent != null)
+                    {
+                        student.IdUser = userStudent.id;
+                        student.user = userStudent;
+
+                        //adiciona o registro de estudante ao banco de dados
+                        _context.Students.Add(student);
+
+                        //salva o aluno
+                        _context.SaveChanges();
+
+                    }
                     return 1;
                 }
             }

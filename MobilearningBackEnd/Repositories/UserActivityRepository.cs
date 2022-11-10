@@ -13,6 +13,8 @@ namespace MobilerningBackEnd.Repositories
         void Update(int id, UserActivityView userActivity);
 
         List<UserActivity>? ListUserActivities(int idUser);
+
+        List<UserView>? ListUsersFromActivity(int idActivity);
     }
 
     public class UserActivityRepository : IUserActivityRepository
@@ -167,6 +169,37 @@ namespace MobilerningBackEnd.Repositories
 
             }
             return null;
+        }
+
+
+        public List<UserView>? ListUsersFromActivity(int idActivity)
+        {
+            List<UserView> users = new List<UserView>();
+            
+             if (_context.UserActivities != null && _context.Users != null)
+             {
+                var results = _context.UserActivities.Where(userActivity => userActivity.idActivity == idActivity).ToList();
+
+                foreach(UserActivity userActivity in results)
+                {
+
+                    UserView userObject = new UserView();
+                    User? user = _context.Users.FirstOrDefault(user => user.id == userActivity.idUser);
+
+                    if(user != null)
+                    {
+                        userObject.idUser = user.id;
+                        userObject.name = user.name;
+
+                        users.Add(userObject);
+                    }
+                    
+
+                }
+             }
+
+            return users;
+
         }
     }
 }
