@@ -58,10 +58,25 @@ namespace MobilerningBackEnd.Repositories
 
         public List<Student>? ListStudents()
         {
-            if (_context.Students != null)
+            List<Student> students = new List<Student>();
+
+            if (_context.Students != null && _context.Users != null)
             {
                 var results = _context.Students.ToList();
-                return results;
+                
+                foreach(Student student in results)
+                {
+                    Student studentObject = new Student();
+                    studentObject.id = student.id;
+                    studentObject.IdUser = student.IdUser;
+                    studentObject.nivel = student.nivel;
+                    studentObject.user = _context.Users.FirstOrDefault(user => user.id == student.IdUser);
+
+                    students.Add(studentObject);
+
+                }
+
+                return students;
             }
             return null;
         }
