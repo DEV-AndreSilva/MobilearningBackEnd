@@ -89,11 +89,10 @@ namespace MobilerningBackEnd.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}")]
         [Route("delete")]
-        public IActionResult Delete(string id, [FromServices] IUserActivityRepository repository)
+        public IActionResult Delete(string idUser, string idActivity, [FromServices] IUserActivityRepository repository)
         {
-            repository.Delete(Convert.ToInt32((id)));
+            repository.Delete(Convert.ToInt32(idUser), Convert.ToInt32(idActivity));
 
             return Ok();
         }

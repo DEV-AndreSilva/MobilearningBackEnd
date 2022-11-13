@@ -9,7 +9,7 @@ namespace MobilerningBackEnd.Repositories
         UserActivity? Read(int id);
         int Create(UserActivityView atividade);
 
-        void Delete(int id);
+        void Delete(int idUser, int idActivity);
         void Update(int id, UserActivityView userActivity);
 
         List<UserActivity>? ListUserActivities(int idUser);
@@ -90,15 +90,16 @@ namespace MobilerningBackEnd.Repositories
             return null;
         }
 
-        public void Delete(int id)
+        public void Delete(int idUser, int idActivity)
         {
-            Console.WriteLine(id);
+            Console.WriteLine($"id usuario {idUser}");
+            Console.WriteLine($"id atividade {idActivity}");
+
             //verificar se não existe usuarioAtividade vinculado a ativiade para permitir a exclusão
             if (_context.UserActivities != null)
             {
-                var userActivityFind = _context.UserActivities.FirstOrDefault(userActivities => userActivities.id == id);
-                Console.WriteLine(userActivityFind);
-
+                var userActivityFind = _context.UserActivities.FirstOrDefault(userActivities => userActivities.idUser == idUser && userActivities.idActivity == idActivity);
+            
                 if (userActivityFind != null)
                 {
                     _context.Entry(userActivityFind).State = EntityState.Deleted;
