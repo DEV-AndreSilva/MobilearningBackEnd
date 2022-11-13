@@ -22,15 +22,32 @@ namespace MobilerningBackEnd.Controllers
 
 
         [HttpPost]
-        public IActionResult Create([FromBody] Activity model, [FromServices] IActivityRepository repository)
+        public IActionResult Create([FromBody] Activity model, [FromServices] IActivityRepository repository, [FromServices] IUserActivityRepository userActivityRep)
         {
+
             if (!ModelState.IsValid)
                 return BadRequest(); //status 400
 
-            var status = repository.Create(model);
+            int idActivityCreated = repository.Create(model);
 
-            if (status == 1)
-                return Ok(); //status 200
+            if (idActivityCreated != 0)
+            {
+                if(model.usersActivity != null)
+                foreach (var item in model.usersActivity)
+                {
+                    UserActivityView userActivityView = new UserActivityView(
+                        idUser: item.idUser,
+                        idActivity: idActivityCreated,
+                        currentStage: "introduction",
+                        progress: "0"
+
+                    );
+                    userActivityRep.Create(userActivityView);
+                }
+
+                return Ok("Criado com sucesso"); //status 200
+            }
+                
 
             return BadRequest("Uma outra atividade com o mesmo titulo ja foi cadastrada");
         }

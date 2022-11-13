@@ -28,17 +28,24 @@ namespace MobilerningBackEnd.Repositories
         }
         public int Create(Activity atividade)
         {
-             Console.WriteLine(atividade.idTeacher);
             if (_context.Activities != null)
             {
-                var userFind = _context.Activities.SingleOrDefault(activity => activity.title == atividade.title && activity.idTeacher == atividade.idTeacher);
+                var activityFind = _context.Activities.SingleOrDefault(activity => activity.title == atividade.title && activity.idTeacher == atividade.idTeacher);
 
-                if (userFind == null)
+                if (activityFind == null)
                 {
                     _context.Activities.Add(atividade);
                     _context.SaveChanges();
+                }
+                else
+                return 0;
 
-                    return 1;
+                var activityCreate = _context.Activities.SingleOrDefault(activity => activity.title == atividade.title && activity.idTeacher == atividade.idTeacher);
+                
+                if(activityCreate != null)
+                {   Console.WriteLine("id atividade criada");
+                    Console.WriteLine(activityCreate.id);
+                    return activityCreate.id;
                 }
             }
             return 0;

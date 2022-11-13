@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MobilerningBackEnd.Models.ViewModels;
 
 namespace MobilerningBackEnd.Models
 {
@@ -36,6 +37,8 @@ namespace MobilerningBackEnd.Models
         public string?  imageURL { get; set; }
 
         public virtual Teacher? user {get;set;}
+
+        public virtual List<UserActivityResumeView>? usersActivity {get; set;}
 
 
     }
