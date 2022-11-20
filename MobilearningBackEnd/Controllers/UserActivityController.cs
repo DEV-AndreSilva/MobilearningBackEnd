@@ -79,6 +79,7 @@ namespace MobilerningBackEnd.Controllers
 
 
         [HttpPut("{id}")]
+        [Route("update")]
         public IActionResult Update(string id, [FromBody] UserActivityView model, [FromServices] IUserActivityRepository repository)
         {
             if (!ModelState.IsValid)

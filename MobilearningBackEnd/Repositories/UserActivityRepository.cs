@@ -109,30 +109,21 @@ namespace MobilerningBackEnd.Repositories
         }
         public void Update(int id, UserActivityView useractivity)
         {
-
             if (_context.UserActivities != null)
             {
-                if (_context.Activities != null && _context.Users != null)
-                {
                     var userActivityFind = _context.UserActivities.FirstOrDefault(userActivity => userActivity.id == id);
-                    var activityFind = _context.Activities.SingleOrDefault(activity => activity.id == useractivity.idActivity);
-                    var userFind = _context.Users.SingleOrDefault(users => users.id == useractivity.idUser);
 
-                    if (activityFind != null && userFind != null && userActivityFind != null)
+                    if (userActivityFind != null)
                     {
-                        userActivityFind.activity = activityFind;
-                        userActivityFind.user = userFind;
                         userActivityFind.currentStage = useractivity.currentStage;
                         userActivityFind.progress = Convert.ToDouble(useractivity.progress);
 
                         if (useractivity.progress == "100")
-                            userActivityFind.endDate = null;
+                            userActivityFind.endDate = DateTime.Now.ToUniversalTime();
 
                         _context.Entry(userActivityFind).State = EntityState.Modified;
                         _context.SaveChanges();
                     }
-
-                }
 
             }
         }

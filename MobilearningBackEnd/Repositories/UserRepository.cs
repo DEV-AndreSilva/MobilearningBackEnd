@@ -35,7 +35,10 @@ namespace MobilerningBackEnd.Repositories
         {
             if (_context.Users != null)
             {
-                var userFind = _context.Users.SingleOrDefault(user => user.email == Email && user.password == Password);
+                var userFind = _context.Users.SingleOrDefault(
+                    user => user.email == Email && 
+                    user.password == Password);
+                    
                 if (userFind != null)
                     return userFind;
             }
