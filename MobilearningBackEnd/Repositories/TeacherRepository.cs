@@ -29,18 +29,32 @@ namespace MobilerningBackEnd.Repositories
                 var userFind = _context.Users.SingleOrDefault(user => user.email == usuario.user!.email);
                 if (userFind == null)
                 {
-                   //adiciona o usuário ao banco de dados
+                    //adiciona o usuário ao banco de dados
                     _context.Users.Add(usuario.user!);
-                    //adiciona o registro de estudante ao banco de dados
-                    _context.Teachers.Add(usuario);
 
+                     //salva o usuário   
                     _context.SaveChanges();
+                    //busca o usuario salvo
+                    var userTeacher = _context.Users.SingleOrDefault(user => user.email == usuario.user!.email);
 
-                    return 1;
+                    if(userTeacher != null)
+                    {
+                        //adiciona o registro de estudante ao banco de dados
+                        _context.Teachers.Add(usuario);
+
+                        _context.SaveChanges();
+
+                        return userTeacher.id;
+                    }
                 }
+                else
+                {
+                    return -1;
+                }
+
             }
             return 0;
-          
+
         }
 
         public List<Teacher>? ListTeachers()

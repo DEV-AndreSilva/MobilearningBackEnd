@@ -27,12 +27,24 @@ namespace MobilerningBackEnd.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(); //status 400
 
-            var status = repository.Create(model);
+            var idUserCreate = repository.Create(model);
 
-            if (status == 1)
-                return Ok(); //status 200
-
-            return BadRequest("E-mail informado pertence a outro usuário do sistema");
+            if (idUserCreate > 0)
+            {
+                Dictionary<String, int> usuario = new Dictionary<string, int> ();
+                usuario.Add("idUser", idUserCreate);
+                string idUserRetorno = JsonSerializer.Serialize(usuario);
+                
+                return Ok(idUserRetorno); //status 200
+            }
+            else if (idUserCreate == -1)
+            {
+                return BadRequest("E-mail informado pertence a outro usuário do sistema");
+            }
+            else
+             return BadRequest("Erro interno, procure o administrador");
+            
+            
         }
 
         [HttpGet]

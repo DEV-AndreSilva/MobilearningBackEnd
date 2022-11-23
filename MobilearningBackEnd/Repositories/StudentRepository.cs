@@ -49,8 +49,12 @@ namespace MobilerningBackEnd.Repositories
                         //salva o aluno
                         _context.SaveChanges();
 
+                        return userStudent.id;
                     }
-                    return 1;
+                }
+                else
+                {
+                    return -1;
                 }
             }
             return 0;
