@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MobilerningBackEnd.Models;
 
 namespace MobilerningBackEnd.Repositories
@@ -9,6 +10,8 @@ namespace MobilerningBackEnd.Repositories
         List<Student>? ListStudents();
 
         int Create(Student usuario);
+
+        int Update(Student usuario);
     }
 
     public class StudentRepository : IStudentRepository
@@ -29,16 +32,16 @@ namespace MobilerningBackEnd.Repositories
                 var userFind = _context.Users.SingleOrDefault(user => user.email == student.user!.email);
                 if (userFind == null)
                 {
-                   //adiciona o usuário ao banco de dados
+                    //adiciona o usuário ao banco de dados
                     _context.Users.Add(student.user!);
-                    
+
                     //salva o usuário
                     _context.SaveChanges();
 
                     //busca o usuario salvo
                     var userStudent = _context.Users.SingleOrDefault(user => user.email == student.user!.email);
 
-                    if(userStudent != null)
+                    if (userStudent != null)
                     {
                         student.IdUser = userStudent.id;
                         student.user = userStudent;
@@ -67,8 +70,8 @@ namespace MobilerningBackEnd.Repositories
             if (_context.Students != null && _context.Users != null)
             {
                 var results = _context.Students.ToList();
-                
-                foreach(Student student in results)
+
+                foreach (Student student in results)
                 {
                     Student studentObject = new Student();
                     studentObject.id = student.id;
@@ -93,8 +96,45 @@ namespace MobilerningBackEnd.Repositories
                 if (userFind != null)
                     return userFind;
             }
-            
+
             return null;
+        }
+
+        public int Update(Student usuario)
+        {
+
+            if (_context.Students != null)
+            {
+                if (usuario.user != null && usuario.user != null)
+                {
+                    var userStudent = _context.Students.SingleOrDefault(Student => Student.user!.id == usuario.user.id);
+
+
+                    if (userStudent != null && _context.Users != null)
+                    {
+                        userStudent.user = _context.Users.SingleOrDefault(User => User.id == userStudent.IdUser);
+
+                        if (userStudent.user != null)
+                        {
+                            userStudent.nivel = usuario.nivel;
+                            userStudent.user.name = usuario.user.name;
+                            userStudent.user.address = usuario.user.address;
+                            userStudent.user.cpf = usuario.user.cpf;
+                            userStudent.user.phone = usuario.user.phone;
+                            userStudent.user.password = usuario.user.password;
+
+                            _context.Entry(userStudent).State = EntityState.Modified;
+                            _context.SaveChanges();
+
+                            return 1;
+                        }
+
+
+                    }
+                }
+
+            }
+            return 0;
         }
     }
 }

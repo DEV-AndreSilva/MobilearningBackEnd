@@ -31,10 +31,10 @@ namespace MobilerningBackEnd.Controllers
 
             if (idUserCreate > 0)
             {
-                Dictionary<String, int> usuario = new Dictionary<string, int> ();
+                Dictionary<String, int> usuario = new Dictionary<string, int>();
                 usuario.Add("idUser", idUserCreate);
                 string idUserRetorno = JsonSerializer.Serialize(usuario);
-                
+
                 return Ok(idUserRetorno); //status 200
             }
             else if (idUserCreate == -1)
@@ -42,9 +42,9 @@ namespace MobilerningBackEnd.Controllers
                 return BadRequest("E-mail informado pertence a outro usuário do sistema");
             }
             else
-             return BadRequest("Erro interno, procure o administrador");
-            
-            
+                return BadRequest("Erro interno, procure o administrador");
+
+
         }
 
         [HttpGet]
@@ -56,6 +56,19 @@ namespace MobilerningBackEnd.Controllers
             string jsonString = JsonSerializer.Serialize(user);
             return Ok(jsonString);
 
+        }
+
+        [HttpPut]
+        public IActionResult Update([FromBody] Student model, [FromServices] IStudentRepository repository)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            if(repository.Update(model) == 1)
+                return Ok("Atualizado com sucesso");
+
+            else
+                return Ok("Registro não atualizado");
         }
     }
 }

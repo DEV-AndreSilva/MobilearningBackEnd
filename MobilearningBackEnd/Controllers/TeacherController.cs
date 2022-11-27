@@ -56,5 +56,18 @@ namespace MobilerningBackEnd.Controllers
             return Ok(jsonString);
 
         }
+
+        [HttpPut]
+        public IActionResult Update([FromBody] Teacher model, [FromServices] ITeacherRepository repository)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            if (repository.Update(model) == 1)
+                return Ok("Atualizado com sucesso");
+
+            else
+                return Ok("Registro não atualizado");
+        }
     }
 }
