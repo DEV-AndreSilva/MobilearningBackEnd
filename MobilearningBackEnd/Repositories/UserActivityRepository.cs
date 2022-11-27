@@ -10,6 +10,9 @@ namespace MobilerningBackEnd.Repositories
         int Create(UserActivityView atividade);
 
         void Delete(int idUser, int idActivity);
+
+        void DeleteAll(int idActivity);
+
         void Update(int id, UserActivityView userActivity);
 
         List<UserActivity>? ListUserActivities(int idUser);
@@ -92,17 +95,34 @@ namespace MobilerningBackEnd.Repositories
 
         public void Delete(int idUser, int idActivity)
         {
-            Console.WriteLine($"id usuario {idUser}");
-            Console.WriteLine($"id atividade {idActivity}");
+            // Console.WriteLine($"id usuario {idUser}");
+            // Console.WriteLine($"id atividade {idActivity}");
 
             //verificar se não existe usuarioAtividade vinculado a ativiade para permitir a exclusão
             if (_context.UserActivities != null)
             {
                 var userActivityFind = _context.UserActivities.FirstOrDefault(userActivities => userActivities.idUser == idUser && userActivities.idActivity == idActivity);
-            
+
                 if (userActivityFind != null)
                 {
                     _context.Entry(userActivityFind).State = EntityState.Deleted;
+                    _context.SaveChanges();
+                }
+            }
+        }
+
+        public void DeleteAll(int idActivity)
+        {
+            if (_context.UserActivities != null)
+            { 
+                var userActivities = _context.UserActivities.Where(userActivities=> userActivities.idActivity == idActivity).ToList();
+
+                if(userActivities != null)
+                {
+                    foreach(UserActivity userActivity in userActivities)
+                    {
+                        _context.Entry(userActivity).State = EntityState.Deleted;
+                    }
                     _context.SaveChanges();
                 }
             }
@@ -111,19 +131,19 @@ namespace MobilerningBackEnd.Repositories
         {
             if (_context.UserActivities != null)
             {
-                    var userActivityFind = _context.UserActivities.FirstOrDefault(userActivity => userActivity.id == id);
+                var userActivityFind = _context.UserActivities.FirstOrDefault(userActivity => userActivity.id == id);
 
-                    if (userActivityFind != null)
-                    {
-                        userActivityFind.currentStage = useractivity.currentStage;
-                        userActivityFind.progress = Convert.ToDouble(useractivity.progress);
+                if (userActivityFind != null)
+                {
+                    userActivityFind.currentStage = useractivity.currentStage;
+                    userActivityFind.progress = Convert.ToDouble(useractivity.progress);
 
-                        if (useractivity.progress == "100")
-                            userActivityFind.endDate = DateTime.Now.ToUniversalTime();
+                    if (useractivity.progress == "100")
+                        userActivityFind.endDate = DateTime.Now.ToUniversalTime();
 
-                        _context.Entry(userActivityFind).State = EntityState.Modified;
-                        _context.SaveChanges();
-                    }
+                    _context.Entry(userActivityFind).State = EntityState.Modified;
+                    _context.SaveChanges();
+                }
 
             }
         }
@@ -167,19 +187,19 @@ namespace MobilerningBackEnd.Repositories
         public List<UserActivityResumeView>? ListUsersFromActivity(int idActivity)
         {
             List<UserActivityResumeView> users = new List<UserActivityResumeView>();
-            
-             if (_context.UserActivities != null && _context.Users != null)
-             {
+
+            if (_context.UserActivities != null && _context.Users != null)
+            {
                 var results = _context.UserActivities.Where(userActivity => userActivity.idActivity == idActivity).ToList();
 
-                foreach(UserActivity userActivity in results)
+                foreach (UserActivity userActivity in results)
                 {
 
                     UserActivityResumeView userObject = new UserActivityResumeView();
                     User? user = _context.Users.FirstOrDefault(user => user.id == userActivity.idUser);
-                    
 
-                    if(user != null)
+
+                    if (user != null)
                     {
                         userObject.idUser = user.id;
                         userObject.name = user.name;
@@ -187,10 +207,10 @@ namespace MobilerningBackEnd.Repositories
 
                         users.Add(userObject);
                     }
-                    
+
 
                 }
-             }
+            }
 
             return users;
 

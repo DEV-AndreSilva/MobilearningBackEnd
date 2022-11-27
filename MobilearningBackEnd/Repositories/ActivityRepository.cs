@@ -11,7 +11,7 @@ namespace MobilerningBackEnd.Repositories
 
         int Create(Activity atividade);
 
-        void Delete(int id, int idTeacher);
+        int Delete(int id, int idTeacher);
         void Update(int id, Activity word);
     }
 
@@ -75,22 +75,28 @@ namespace MobilerningBackEnd.Repositories
             return null;
         }
 
-        public void Delete(int id, int idTeacher)
+        public int Delete(int id, int idTeacher)
         {
-            Console.WriteLine(id);
-            Console.WriteLine(idTeacher);
+            // Console.WriteLine(id);
+            // Console.WriteLine(idTeacher);
+
+            int idActivity = 0;
             //verificar se não existe usuarioAtividade vinculado a ativiade para permitir a exclusão
             if(_context.Activities != null)
             {
                  var activityFind = _context.Activities.FirstOrDefault(activityFind=>activityFind.id==id && activityFind.idTeacher == idTeacher);
+                 
                  Console.WriteLine(activityFind);
 
                 if(activityFind != null)
                 {
+                    idActivity = activityFind.id;
                     _context.Entry(activityFind).State = EntityState.Deleted;
                     _context.SaveChanges();
                 }    
             }
+
+            return idActivity;
         }
         public void Update(int id, Activity activityModel)
         {
