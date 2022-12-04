@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MobilerningBackEnd.Models;
 
 namespace MobilerningBackEnd.Repositories
@@ -7,6 +8,8 @@ namespace MobilerningBackEnd.Repositories
         User? Read(string Email, string Password);
 
         List<User>? ListUsers();
+
+        User? Update(User user);
     }
 
     public class UserRepository : IUserRepository
@@ -45,6 +48,42 @@ namespace MobilerningBackEnd.Repositories
 
 
             return null;
+        }
+
+        public User? Update(User userPut)
+        {
+            Console.WriteLine("user id");
+            Console.WriteLine(userPut.id);
+
+            if(_context.Users!= null)
+            {
+                User? userNew = _context.Users.FirstOrDefault(userDatabase=> userDatabase.id == userPut.id);
+
+                //recupera o usuário do banco de dados
+                if(userNew != null)
+                {
+                    Console.WriteLine(userNew.id);
+                    userNew.id = userNew.id;
+                    userNew.address = userPut.address;
+                    userNew.cpf = userPut.cpf;
+                    userNew.email = userPut.email;
+                    userNew.name = userPut.name;
+                    userNew.password = userPut.password;
+                    userNew.phone = userPut.phone;
+
+                    _context.Entry(userNew).State = EntityState.Modified;
+                    _context.SaveChanges();
+
+                    return userNew;
+                }
+                return null;
+                
+
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ namespace MobilerningBackEnd.Controllers
 {
     [ApiController]
     [Route("user")] //http://localhost:5000
-    public class UserController: ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IConfiguration _configuration;
         public UserController(IConfiguration configuration)
@@ -22,14 +22,14 @@ namespace MobilerningBackEnd.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public IActionResult Login([FromBody]UserLogin model,[FromServices]IUserRepository repository)
+        public IActionResult Login([FromBody] UserLogin model, [FromServices] IUserRepository repository)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest();
 
-            var usuario = repository.Read(model.email!,model.password!);
+            var usuario = repository.Read(model.email!, model.password!);
 
-            if(usuario == null )
+            if (usuario == null)
                 return Unauthorized();
 
             usuario.password = "";
@@ -47,31 +47,26 @@ namespace MobilerningBackEnd.Controllers
 
         [HttpGet]
         [Route("ListUsers")]
-        public IActionResult  ListUsers([FromServices]IUserRepository repository)
+        public IActionResult ListUsers([FromServices] IUserRepository repository)
         {
             var user = repository.ListUsers();
-            
-            //var jobject =('yourVariable');
-           string jsonString = JsonSerializer.Serialize(user);
-           return Ok(jsonString);
-            
-            
 
-            // var responseError = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-            // return responseError;
+            //var jobject =('yourVariable');
+            string jsonString = JsonSerializer.Serialize(user);
+            return Ok(jsonString);
         }
 
         private string GenerateToken(User usuario)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var  keyString = _configuration.GetSection("MySettings").GetSection("Key").Value;
+            var keyString = _configuration.GetSection("MySettings").GetSection("Key").Value;
 
             Console.WriteLine(keyString);
 
             var key = Encoding.ASCII.GetBytes(keyString);
 
-            var type  = usuario.type == null ? "undefined" : usuario.type.ToString();
+            var type = usuario.type == null ? "undefined" : usuario.type.ToString();
 
             var descriptor = new SecurityTokenDescriptor
             {
@@ -81,13 +76,31 @@ namespace MobilerningBackEnd.Controllers
                 }),
                 Expires = DateTime.UtcNow.AddHours(5),
                 SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key),SecurityAlgorithms.HmacSha256Signature
+                    new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature
                 )
-                
+
             };
 
             var token = tokenHandler.CreateToken(descriptor);
             return tokenHandler.WriteToken(token);
         }
+
+        [Route("UpdateUser")]
+        public IActionResult UpdateUser([FromBody] User model, [FromServices] IUserRepository repository)
+        {
+
+            User? user = repository.Update(model);
+            if (user != null)
+            {
+                string jsonString = JsonSerializer.Serialize(user);
+                return Ok(jsonString);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+
     }
 }
